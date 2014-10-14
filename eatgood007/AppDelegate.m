@@ -15,8 +15,36 @@
 @implementation AppDelegate
 
 
+#pragma -
+#pragma mark 应用生命周期函数
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //用于判断是否初次启动
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunched"];
+    }
+    
+    //初次启动时执行的操作，引导视图加载再下面这个if语句中执行
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunced"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"photoSaveAlbumSwitchIsOn"];
+    }
+   
+    //判断网络连通性，若无法连接弹窗提醒
+    
+    ViewController *egRootViewController = [[ViewController alloc] init];
+    UINavigationController *egNav = [[UINavigationController alloc] initWithRootViewController:egRootViewController];
+    
+    self.window.rootViewController = egNav;
+    
+    [self.window addSubview:egNav.view];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
